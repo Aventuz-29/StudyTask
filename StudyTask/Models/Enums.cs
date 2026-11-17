@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace StudyTask.Models
 {
-    public enum UserRole
-    {
-        Curator = 1,
-        Student = 2
-    }
-
     public enum TaskType
     {
         Homework = 1,
