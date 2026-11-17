@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StudyTask.Models
+{
+    public enum UserRole
+    {
+        Curator = 1,
+        Student = 2
+    }
+
+    public enum TaskType
+    {
+        Homework = 1,
+        Project = 2,
+        Test = 3,
+        Other = 4
+    }
+
+    public enum WorkStatus
+    {
+        Active = 1,
+        Submitted = 2,
+        Accepted = 3,
+        ReturnedForRevision = 4,
+        Overdue = 5
+    }
+}
