@@ -245,6 +245,18 @@ namespace StudyTask.Migrations
                     b.HasBaseType("StudyTask.Models.User");
 
                     b.HasDiscriminator().HasValue("Administrator");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            FullName = "Администратор",
+                            IsActive = true,
+                            Login = "admin",
+                            PasswordHash = "A665A45920422F9D417E4867EFDC4FB8A04A1F3FFF1FA07E998E86F7F7A27AE3",
+                            RoleId = 3
+                        });
                 });
 
             modelBuilder.Entity("StudyTask.Models.Curator", b =>

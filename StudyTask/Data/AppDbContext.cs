@@ -28,6 +28,16 @@ namespace StudyTask.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Administrator>().HasData(new Administrator
+            {
+                Id = 1,
+                Login = "admin",
+                PasswordHash = "A665A45920422F9D417E4867EFDC4FB8A04A1F3FFF1FA07E998E86F7F7A27AE3", // admin/123
+                FullName = "Администратор",
+                RoleId = 3,                                   // Administrator
+                IsActive = true,
+                CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            });
             modelBuilder.Entity<Role>(e =>
             {
                 e.ToTable("Roles");
