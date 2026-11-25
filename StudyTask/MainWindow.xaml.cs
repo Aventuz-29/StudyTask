@@ -68,7 +68,7 @@ namespace StudyTask
 
         private void OpenWindowForRole(User user)
         {
-            // RoleId: 1 = Curator, 2 = Student, 3 = Administrator (см. Seed Data в AppDbContext)
+            // RoleId: 1 = Curator, 2 = Student, 3 = Administrator
             Window? targetWindow = null;
 
             switch (user.RoleId)
@@ -105,10 +105,21 @@ namespace StudyTask
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Регистрация будет реализована позже",
-                            "StudyTask",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
+            RegisterWindow registerWindow = new RegisterWindow
+            {
+                Owner = this
+            };
+
+            Hide();                     // прячем окно входа на время регистрации
+            try
+            {
+                registerWindow.ShowDialog();
+            }
+            finally
+            {
+                Show();                 // возвращаем окно входа
+                PasswordBox.Clear();    // пароль после возврата вводим заново
+            }
         }
     }
 }
