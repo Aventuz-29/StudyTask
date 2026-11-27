@@ -5,7 +5,7 @@ namespace StudyTask.Models
     public class UserFactory
     {
         /// <summary>
-        /// Создаёт пользователя нужного класса по роли из справочника Roles.
+        /// Фабрика пользователей: создаёт Curator, Student или Administrator по роли
         /// </summary>
         public User Create(Role role, string login, string passwordHash,
                            string fullName, int? groupId = null)

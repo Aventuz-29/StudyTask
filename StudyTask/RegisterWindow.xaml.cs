@@ -9,10 +9,11 @@ using StudyTask.Models;
 
 namespace StudyTask
 {
+    /// <summary>
+    /// Окно регистрации: создаёт пользователя через UserFactory
+    /// </summary>
     public partial class RegisterWindow : Window
     {
-        // один контекст на время жизни окна: роли и группы остаются отслеживаемыми,
-        // а новый пользователь добавляется в тот же контекст
         private readonly AppDbContext _context = new AppDbContext();
 
         public RegisterWindow()
@@ -46,9 +47,11 @@ namespace StudyTask
             GroupComboBox.SelectedIndex = -1;
         }
 
+        /// <summary>
+        /// Группа нужна только студенту 
+        /// </summary>
         private void RoleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // RoleId = 2 — Student
             bool isStudent = RoleComboBox.SelectedValue is int roleId && roleId == 2;
 
             GroupComboBox.IsEnabled = isStudent;
@@ -64,7 +67,6 @@ namespace StudyTask
             string password = PasswordBox.Password;
             string confirmPassword = ConfirmPasswordBox.Password;
 
-            // 1. Заполненность полей
             if (string.IsNullOrWhiteSpace(fullName) ||
                 string.IsNullOrWhiteSpace(login) ||
                 string.IsNullOrWhiteSpace(password))
@@ -76,7 +78,6 @@ namespace StudyTask
                 return;
             }
 
-            // 2. Совпадение паролей
             if (password != confirmPassword)
             {
                 MessageBox.Show("Пароли не совпадают.",
@@ -86,7 +87,6 @@ namespace StudyTask
                 return;
             }
 
-            // 3. Выбрана роль
             if (!(RoleComboBox.SelectedItem is Role selectedRole))
             {
                 MessageBox.Show("Выберите роль.",
@@ -96,7 +96,6 @@ namespace StudyTask
                 return;
             }
 
-            // 4. Для студента обязательна группа
             int? groupId = null;
 
             if (selectedRole.Id == 2)
@@ -113,7 +112,6 @@ namespace StudyTask
                 groupId = selectedGroup.Id;
             }
 
-            // 5. Логин должен быть свободен (проверка ДО вызова фабрики)
             if (_context.Users.Any(u => u.Login == login))
             {
                 MessageBox.Show("Логин '" + login + "' уже занят. Выберите другой.",
@@ -125,13 +123,11 @@ namespace StudyTask
 
             try
             {
-                // 6. Создание пользователя через фабрику
                 string passwordHash = PasswordHasher.HashPassword(password);
 
                 UserFactory factory = new UserFactory();
                 User newUser = factory.Create(selectedRole, login, passwordHash, fullName, groupId);
 
-                // 7. Сохранение
                 _context.Users.Add(newUser);
                 _context.SaveChanges();
 

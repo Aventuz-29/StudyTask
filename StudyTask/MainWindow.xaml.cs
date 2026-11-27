@@ -8,6 +8,9 @@ using StudyTask.Models;
 
 namespace StudyTask
 {
+    /// <summary>
+    /// Окно входа: проверяет логин/пароль и открывает кабинет по роли
+    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -20,7 +23,6 @@ namespace StudyTask
             string login = LoginTextBox.Text.Trim();
             string password = PasswordBox.Password;
 
-            // 1. Проверка заполнения полей
             if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Введите логин и пароль.",
@@ -32,28 +34,24 @@ namespace StudyTask
 
             try
             {
-                // 2. Поиск пользователя в базе вместе с ролью
                 using (AppDbContext context = new AppDbContext())
                 {
                     User? user = context.Users
                         .Include(u => u.Role)
                         .FirstOrDefault(u => u.Login == login);
 
-                    // 3. Пользователь не найден
                     if (user == null || !user.IsActive)
                     {
                         ShowLoginError();
                         return;
                     }
 
-                    // 4. Проверка пароля
                     if (!PasswordHasher.VerifyPassword(password, user.PasswordHash))
                     {
                         ShowLoginError();
                         return;
                     }
 
-                    // 5. Открытие окна по роли
                     OpenWindowForRole(user);
                 }
             }
@@ -66,15 +64,17 @@ namespace StudyTask
             }
         }
 
+        /// <summary>
+        /// Открывает кабинет по RoleId: 1 — куратор, 2 — студент, 3 — админ
+        /// </summary>
         private void OpenWindowForRole(User user)
         {
-            // RoleId: 1 = Curator, 2 = Student, 3 = Administrator
             Window? targetWindow = null;
 
             switch (user.RoleId)
             {
-                case 1:
-                    targetWindow = new CuratorWindow();
+                case 1 when user is Curator curator:
+                    targetWindow = new CuratorWindow(curator);
                     break;
                 case 2:
                     targetWindow = new StudentWindow();
@@ -95,6 +95,9 @@ namespace StudyTask
             Close();
         }
 
+        /// <summary>
+        /// Одинаковое сообщение для «нет логина» и «неверный пароль»
+        /// </summary>
         private static void ShowLoginError()
         {
             MessageBox.Show("Неверный логин или пароль",
@@ -110,15 +113,15 @@ namespace StudyTask
                 Owner = this
             };
 
-            Hide();                     // прячем окно входа на время регистрации
+            Hide();                     
             try
             {
                 registerWindow.ShowDialog();
             }
             finally
             {
-                Show();                 // возвращаем окно входа
-                PasswordBox.Clear();    // пароль после возврата вводим заново
+                Show();                 
+                PasswordBox.Clear();    
             }
         }
     }

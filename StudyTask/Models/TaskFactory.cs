@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace StudyTask.Models
 {
+    /// <summary>
+    /// Фабрика заданий: создаёт задачу и выполнения для студентов
+    /// </summary>
     public class TaskFactory
     {
         public TaskEntity CreateTask(string title, string description, TaskType type,

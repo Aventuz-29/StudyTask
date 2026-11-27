@@ -2,6 +2,9 @@
 
 namespace StudyTask.Models
 {
+    /// <summary>
+    /// Базовый пользователь
+    /// </summary>
     public abstract class User
     {
         public int Id { get; set; }

@@ -6,7 +6,9 @@ namespace StudyTask.Infrastructure
 {
     public static class PasswordHasher
     {
-        /// <summary>SHA-256</summary>
+        /// <summary>
+        /// Хеширование паролей через SHA-256
+        /// </summary>
         public static string HashPassword(string password)
         {
             if (string.IsNullOrEmpty(password))

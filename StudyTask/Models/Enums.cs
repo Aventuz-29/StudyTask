@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace StudyTask.Models
 {
+    /// <summary>
+    /// Тип задания
+    /// </summary>
     public enum TaskType
     {
         Homework = 1,
@@ -14,6 +17,9 @@ namespace StudyTask.Models
         Other = 4
     }
 
+    /// <summary>
+    /// Статус выполнения задания. В БД хранится как int
+    /// </summary>
     public enum WorkStatus
     {
         Active = 1,
